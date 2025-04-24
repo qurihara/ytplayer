@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YouTube Player</title>
+    <title>One Tap YouTube Player</title>
 </head>
 <body>
     <div id="player"></div>
@@ -34,15 +34,27 @@
         }
 
         function onPlayerReady(event) {
-            // タップで再生・一時停止の切り替え
             const playerElement = document.getElementById('player');
-            playerElement.addEventListener('click', function() {
-                if (player.getPlayerState() === YT.PlayerState.PLAYING) {
-                    player.pauseVideo();
-                } else {
-                    player.playVideo();
+
+            let handled = false;
+
+            function handleInteraction() {
+                if (!handled) {
+                    if (player.getPlayerState() === YT.PlayerState.PLAYING) {
+                        player.pauseVideo();
+                    } else {
+                        player.playVideo();
+                    }
+                    handled = true;
+                    setTimeout(() => handled = false, 100); // タッチとクリックの重複を防ぐためのデバウンス
                 }
-            });
+            }
+
+            // タッチデバイス用
+            playerElement.addEventListener('touchend', handleInteraction);
+
+            // PC用
+            playerElement.addEventListener('click', handleInteraction);
 
             // フルスクリーンで表示
             playerElement.style.width = "100%";
