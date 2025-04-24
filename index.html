@@ -22,18 +22,23 @@
                     'onReady': onPlayerReady
                 },
                 playerVars: {
-                    'autoplay': 1, // 自動再生
-                    'controls': 0, // プレイヤーコントロールを非表示
-                    'enablejsapi': 1, // JavaScript APIを有効にする
-                    'fs': 1, // フルスクリーンボタンを表示
-                    'iv_load_policy': 3, // アノテーションを非表示
-                    'modestbranding': 1, // YouTubeロゴを最小限に
-                    'rel': 0 // 関連動画を非表示
+                    'autoplay': 1,
+                    'controls': 0,
+                    'enablejsapi': 1,
+                    'fs': 1,
+                    'iv_load_policy': 3,
+                    'modestbranding': 1,
+                    'rel': 0,
+                    'showinfo': 0, // 動画情報を非表示
+                    'playsinline': 1, // iOSでインライン再生を強制
+                    'disablekb': 1, // キーボードコントロールを無効化
+                    'origin': window.location.origin // セキュリティ対策
                 }
             });
         }
 
         function onPlayerReady(event) {
+            function onPlayerReady(event) {
             // タップで再生・一時停止の切り替え
             const playerElement = document.getElementById('player');
             
@@ -41,14 +46,14 @@
             playerElement.addEventListener('click', togglePlayPause);
             playerElement.addEventListener('touchstart', function(e) {
                 e.preventDefault(); // デフォルトのタッチ動作を防止
+                e.stopPropagation(); // イベントの伝播を停止
                 togglePlayPause();
-            });
+            }, { passive: false }); // passive: falseを指定してpreventDefaultを有効に
 
             // フルスクリーンで表示
             playerElement.style.width = "100%";
             playerElement.style.height = "100vh";
         }
-
         // 再生・一時停止を切り替える関数
         function togglePlayPause() {
             if (player.getPlayerState() === YT.PlayerState.PLAYING) {
