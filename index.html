@@ -29,30 +29,43 @@
                     'iv_load_policy': 3,
                     'modestbranding': 1,
                     'rel': 0,
-                    'showinfo': 0, // 動画情報を非表示
-                    'playsinline': 1, // iOSでインライン再生を強制
-                    'disablekb': 1, // キーボードコントロールを無効化
-                    'origin': window.location.origin // セキュリティ対策
+                    'showinfo': 0,
+                    'playsinline': 1,
+                    'disablekb': 1,
+                    'origin': window.location.origin,
+                    'widget_referrer': window.location.origin,
+                    'allow': 'autoplay',
+                    'allowfullscreen': 'true',
+                    'allowscriptaccess': 'always',
+                    'wmode': 'transparent'
                 }
             });
         }
 
         function onPlayerReady(event) {
-            // タップで再生・一時停止の切り替え
             const playerElement = document.getElementById('player');
             
-            // PCのクリックとスマートフォンのタップの両方に対応
-            playerElement.addEventListener('click', togglePlayPause);
-            playerElement.addEventListener('touchstart', function(e) {
-                e.preventDefault(); // デフォルトのタッチ動作を防止
-                e.stopPropagation(); // イベントの伝播を停止
-                togglePlayPause();
-            }, { passive: false }); // passive: falseを指定してpreventDefaultを有効に
-
-            // フルスクリーンで表示
+            // プレーヤーのスタイルを設定
             playerElement.style.width = "100%";
             playerElement.style.height = "100vh";
+            playerElement.style.position = "fixed";
+            playerElement.style.top = "0";
+            playerElement.style.left = "0";
+            playerElement.style.zIndex = "9999";
+            playerElement.style.touchAction = "none";
+            playerElement.style.webkitTouchCallout = "none";
+            playerElement.style.webkitUserSelect = "none";
+            playerElement.style.userSelect = "none";
+            
+            // イベントリスナーを設定
+            playerElement.addEventListener('click', togglePlayPause);
+            playerElement.addEventListener('touchstart', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                togglePlayPause();
+            }, { passive: false });
         }
+        
         // 再生・一時停止を切り替える関数
         function togglePlayPause() {
             if (player.getPlayerState() === YT.PlayerState.PLAYING) {
