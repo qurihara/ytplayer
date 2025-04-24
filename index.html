@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTube Player</title>
+</head>
+<body>
+    <div id="player"></div>
+    <script src="https://www.youtube.com/iframe_api"></script>
+    <script>
+        var player;
+        function onYouTubeIframeAPIReady() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const videoId = urlParams.get('v'); // `v`は動画IDを指定するGETパラメータ
+
+            player = new YT.Player('player', {
+                height: '390',
+                width: '640',
+                videoId: videoId,
+                events: {
+                    'onReady': onPlayerReady
+                },
+                playerVars: {
+                    'autoplay': 1, // 自動再生
+                    'controls': 0, // プレイヤーコントロールを非表示
+                    'enablejsapi': 1, // JavaScript APIを有効にする
+                    'fs': 1, // フルスクリーンボタンを表示
+                    'iv_load_policy': 3, // アノテーションを非表示
+                    'modestbranding': 1, // YouTubeロゴを最小限に
+                    'rel': 0 // 関連動画を非表示
+                }
+            });
+        }
+
+        function onPlayerReady(event) {
+            // タップで再生・一時停止の切り替え
+            const playerElement = document.getElementById('player');
+            playerElement.addEventListener('click', function() {
+                if (player.getPlayerState() === YT.PlayerState.PLAYING) {
+                    player.pauseVideo();
+                } else {
+                    player.playVideo();
+                }
+            });
+
+            // フルスクリーンで表示
+            playerElement.style.width = "100%";
+            playerElement.style.height = "100vh"; // ビューポートの高さ全体を使用
+        }
+    </script>
+</body>
+</html>
