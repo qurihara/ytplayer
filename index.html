@@ -13,6 +13,7 @@
             height: 100vh;
             overflow: hidden;
             touch-action: none;
+            box-sizing: border-box; /* ボックスサイズの計算方法を変更 */
         }
         #player {
             width: 100%;
@@ -20,12 +21,12 @@
             touch-action: none;
         }
         #controlButton {
-            width: 100%;
-            height: 50vh;
+            width: calc(100% - 20px); /* マージンを考慮した幅の計算 */
+            height: calc(50vh - 20px); /* マージンを考慮した高さの計算 */
             background-color: #4CAF50;
             border: none;
             color: white;
-            font-size: 8vw; /* ビューポート幅に応じてフォントサイズを調整 */
+            font-size: 8vw;
             font-weight: bold;
             cursor: pointer;
             display: flex;
@@ -39,6 +40,7 @@
             border-radius: 10px;
             margin: 10px;
             padding: 0;
+            box-sizing: border-box; /* ボックスサイズの計算方法を変更 */
         }
         #controlButton:active {
             background-color: #45a049;
