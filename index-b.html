@@ -55,7 +55,7 @@
         var player;
         function onYouTubeIframeAPIReady() {
             const urlParams = new URLSearchParams(window.location.search);
-            const videoId = urlParams.get('v');
+            const videoId = urlParams.get('v') || 'Mm76KYNVAi0';  // デフォルト値を設定
 
             player = new YT.Player('player', {
                 height: '100%',
